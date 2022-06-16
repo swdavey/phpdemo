@@ -24,11 +24,11 @@ chmod 0700 getComposer.sh
 sudo mv composer.phar /usr/local/bin/composer
 sudo chmod 0755 /usr/local/bin/composer
 ```
-4. Install MySQL Shell, then use it to run the createDb.sql script. This will create the database and populate its schema. You will need to run this script using an administrative user (i.e. capable of creating the database, table and inserting data). Before running the script edit it to provide the application user with a password. 
+4. Install MySQL Shell, then use it to run the createdb.sql script. This will create the database and populate its schema. You will need to run this script using an administrative user (i.e. capable of creating the database, table and inserting data). Before running the script edit it to provide the application user with a password. 
 ```shell
 cd ~/stage/phpdemo/scripts
 sudo dnf install mysql-shell
-mysqlsh --uri <username>@<database-host> -f createDb.sql
+mysqlsh --uri <username>@<database-host> -f createdb.sql
 ```
 5. Change directory to phpdemo/src then copy the names.php file to the document root of your Apache web server (e.g. /var/www/html or your virtual host's document root).
 ```shell
