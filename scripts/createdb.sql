@@ -7,3 +7,5 @@ CREATE TABLE t1 (
 );
 INSERT INTO t1 (name) VALUES ('Fred'),('Barney'),('Wilma'),('Betty');
 SELECT * FROM t1;
+CREATE USER appuser@'%' IDENTIFIED BY 'Welcome1!';
+GRANT select,insert,update,delete ON db1.* TO appuser@'%';
