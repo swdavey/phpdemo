@@ -30,10 +30,12 @@ cd ~/stage/phpdemo/scripts
 sudo dnf install mysql-shell
 mysqlsh --uri <username>@<database-host> -f createdb.sql
 ```
-5. Change directory to phpdemo/src then copy the names.php file to the document root of your Apache web server (e.g. /var/www/html or your virtual host's document root).
+5. Change directory to phpdemo/src then copy the names.php file to the document root of your Apache web server (e.g. /var/www/html or your virtual host's document root). Change into the document root then install dotenv and its dependencies using composer.
 ```shell
 cd ~/stage/phpdemo/src
 sudo cp names.php /var/www/html
+sudo cd /var/www/html
+sudo composer require vlucas/phpdotenv
 ```
 6. Create a directory to host a .env file. To conform with the code in names.php this should be located outside of the document root and be called config. For example if the document root is /var/www/html then create /var/www/config. Creating this directory outside of the document root helps prevent hackers from accessing the database credentials that will be stored in a file called .env
 ```shell
