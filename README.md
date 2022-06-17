@@ -53,14 +53,15 @@ exit
 ```
 # Running and Troubleshooting
 You should now be able to go to your browser and navigate to your webpage, e.g http://<server-ip-address>/names.php . 
-If the page does not display check that apache is properly working. For example on a Red Hat / Fedora / Centos / Oracle Linux system
+If the page does not display check that apache is properly working. For example on a Red Hat / Fedora / Centos / Oracle Linux system run:
 ```shell
 systemctl status httpd
 ```
 Make alterations based on the output. If Apache is running correctly, check that you deployed to the document root and/or your virtual hosts are set up correctly.
   
 **Red Hat / Red Hat variants only.** 
-If the page partially displays (i.e. is missing data that should have come from the database) then this may be a problem with selinux. To resolve start by testing using PHP on the command line:
+  
+If the page partially displays (i.e. is missing data that should have come from the database) then this may be a problem with selinux (typically enabled and enforcing by default). To resolve start by testing using PHP on the command line:
 ```shell
 php /var/www/html/names.php
 ```
@@ -68,9 +69,19 @@ This should display the output html and should include a list of names from the 
 ```shell
 getenforce
 ```
-If the system responds with Enforcing then selinux is in use. By default selinux disallows apache from making remote connections to databases. To overcome this issue run the following command then restart apache
+If the system responds with Enforcing then selinux is in use. By default selinux disallows Apache from making remote connections to databases. To overcome this issue you can either disable selinux (not recommended) or preferably configure selinux as shown below:
 ```shell
 sudo setsebool -P httpd_can_network_connect_db 1
 sudo systemctl restart httpd
 ```
-Now retest with a browser 
+Now re-test with a browser.
+  
+If you are using virtual hosts then you will probably need to set selinux policies to allow access to non-default directories and files as well as for logging and caches. The following assumes a virtual host which uses /webapp as its document root:
+  ```shell
+sudo dnf install policycoreutils-python-utils
+semanage fcontext -a -t httpd_sys_content_t "/webapps(/.*)?" 
+semanage fcontext -a -t httpd_log_t "/webapps/logs(/.*)?"
+semanage fcontext -a -t httpd_cache_t "/webapps/cache(/.*)?“
+sudo systemctl restart httpd
+```
+Re-test with a browser.
